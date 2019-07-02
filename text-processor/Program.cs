@@ -29,7 +29,7 @@ namespace text_processor
             if (isValid)
             {
                 var handler = (new Manager(initialInput)).getHandler();
-                isSuccess = handler!= null && handler.Execute();
+                isSuccess = handler != null && handler.Execute();
             }
             if (isValid && !isSuccess)
             {
@@ -45,7 +45,7 @@ namespace text_processor
             ConsoleKeyInfo button;
             // Prevent example from ending if CTL+C is pressed.
             Console.TreatControlCAsInput = true;
-            
+
             var buffer = new StringBuilder();
             do
             {
@@ -55,19 +55,19 @@ namespace text_processor
                 {
                     buffer.Append(button.KeyChar);
                 }
+                if (buffer.Length == 0)
+                {
+                    button = new ConsoleKeyInfo('\r', ConsoleKey.Escape, false, false, false);
+                }
                 if (button.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine();
                     input = buffer.ToString();
                     buffer.Clear();
                 }
-                if (string.IsNullOrWhiteSpace(input) )
-                {
-                    button = new ConsoleKeyInfo('\r', ConsoleKey.Escape,false,false,false);
-                }
             } while (button.Key != ConsoleKey.Escape);
-            
-            
+
+
         }
     }
 }

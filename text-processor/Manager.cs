@@ -13,6 +13,10 @@
         {
             IHandle result = new Mount(_command);
             var isValid = _command != null;
+            if (isValid && _command.IsMount)
+            {
+                result = new Mount(_command);
+            }
             if (isValid && _command.IsUnmount)
             {
                 result = new Unmount(_command);

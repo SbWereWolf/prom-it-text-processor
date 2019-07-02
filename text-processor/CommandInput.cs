@@ -10,11 +10,11 @@ namespace text_processor
         private const string Mount = "mount-from";
         private const string Unmount = "unmount-all";
 
-        private static readonly string[] WithoutArgument = { Update };
-        private static readonly string[] WithArgument = { Mount, Unmount };
+        private static readonly string[] WithoutArgument = { Unmount };
+        private static readonly string[] WithArgument = { Mount, Update };
         private readonly string[] _command;
         private string Operation { get; set; }
-        private string Argument { get; set; }
+        public string Argument { get; private set; }
 
         public bool IsUpdate { get; private set; } = false;
         public bool IsMount { get; private set; } = false;
@@ -38,7 +38,7 @@ namespace text_processor
             }
             if (isSuccess && withoutArgument)
             {
-                isSuccess = WithoutArgument.Contains(operation) ;
+                isSuccess = WithoutArgument.Contains(operation);
             }
             if (isSuccess && withArgument)
             {
