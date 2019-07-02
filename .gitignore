@@ -1,3 +1,4 @@
 .vs/**
 text-processor/bin/**
 text-processor/obj/**
+packages/**
