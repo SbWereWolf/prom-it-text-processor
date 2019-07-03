@@ -1,33 +1,40 @@
-﻿using System.Data.SQLite;
-
-namespace text_processor
+﻿namespace text_processor
 {
-    class Unmount : IHandle
+    class Unmount : DatabaseHandler, IHandle
     {
-        public Unmount(CommandInput command)
-        {
-
-        }
         public bool Execute()
         {
-            var databaseFilePath = Properties.Settings.Default?.DataPath;
-            var connection = new SQLiteConnection($"Data Source={databaseFilePath};Version=3;");
+            var connection = this.InitializeConnection();
 
-            connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText = @"
-            DROP TABLE IF EXISTS file_line;
-            DROP TABLE IF EXISTS autocompletion;
-            DROP INDEX IF EXISTS file_line_line_index;
-            DROP INDEX IF EXISTS autocompletion_word_uindex;
+            var command = connection?.CreateCommand();
 
-            VACUUM;
+            var result = false;
+            if (command != null)
+            {
+
+                command.CommandText = @"
+DROP TABLE IF EXISTS file_line;
+DROP INDEX IF EXISTS file_line_line_index;
+DROP TABLE IF EXISTS new_data;
+DROP INDEX IF EXISTS new_data_line_index;
+DROP TABLE IF EXISTS autocompletion;
+DROP INDEX IF EXISTS autocompletion_word_uindex;
+
+VACUUM ;
             ";
-            command.ExecuteNonQuery();
 
-            connection.Close();
+                connection.Open();
+                command.ExecuteNonQuery();
 
-            return true;
+                connection.Close();
+                result = true;
+            }
+
+            return result;
+        }
+
+        public Unmount(CommandInput command) : base(command)
+        {
         }
     }
 }

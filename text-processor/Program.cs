@@ -57,7 +57,7 @@ namespace text_processor
                 }
                 if (buffer.Length == 0)
                 {
-                    button = new ConsoleKeyInfo('\r', ConsoleKey.Escape, false, false, false);
+                    button = new ConsoleKeyInfo('\u001b', ConsoleKey.Escape, false, false, false);
                 }
                 if (button.Key == ConsoleKey.Enter)
                 {

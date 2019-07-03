@@ -76,6 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandInput.cs" />
+    <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="FileHandler.cs" />
     <Compile Include="IHandle.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
