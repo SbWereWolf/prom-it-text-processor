@@ -1,6 +1,6 @@
 ﻿namespace text_processor
 {
-    class Unmount : DatabaseHandler, IHandle
+    class Unmount : CommandHandler, IHandle
     {
         public bool Execute()
         {

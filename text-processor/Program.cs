@@ -7,6 +7,54 @@ namespace text_processor
     {
         static void Main(string[] args)
         {
+            ProcessCommand(args);
+
+            ProcessKeyPressed();
+        }
+
+        private static void ProcessKeyPressed()
+        {
+            ConsoleKeyInfo button;
+            var buffer = new StringBuilder();
+            do
+            {
+                button = Console.ReadKey();
+                if (button.Key != ConsoleKey.Escape && button.Key != ConsoleKey.Enter)
+                {
+                    buffer.Append(button.KeyChar);
+                }
+                if (buffer.Length == 0)
+                {
+                    button = new ConsoleKeyInfo('\u001b', ConsoleKey.Escape, false, false, false);
+                }
+
+                int amount = 0;
+                if (button.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    amount = buffer.Length;
+                }
+                if (button.Key == ConsoleKey.Enter && amount > 2)
+                {
+                    var input = buffer.ToString();
+                    buffer.Clear();
+
+                    var processor = new InputProcessor(input);
+                    var suggestion = processor.Process();
+                    if (suggestion != null)
+                    {
+                        foreach (var word in suggestion)
+                        {
+                            Console.WriteLine(word);
+                        }
+                    }
+                    Console.WriteLine();
+                }
+            } while (button.Key != ConsoleKey.Escape);
+        }
+
+        private static void ProcessCommand(string[] args)
+        {
             var command = new string[0];
             var tryParse = false;
             if (args?.Length != 0)
@@ -41,33 +89,6 @@ namespace text_processor
                 var argument = string.Join(" ", args);
                 Console.WriteLine($"Команда `{argument}` выполнена успешно");
             }
-
-            ConsoleKeyInfo button;
-            // Prevent example from ending if CTL+C is pressed.
-            Console.TreatControlCAsInput = true;
-
-            var buffer = new StringBuilder();
-            do
-            {
-                var input = string.Empty;
-                button = Console.ReadKey();
-                if (button.Key != ConsoleKey.Escape && button.Key != ConsoleKey.Enter)
-                {
-                    buffer.Append(button.KeyChar);
-                }
-                if (buffer.Length == 0)
-                {
-                    button = new ConsoleKeyInfo('\u001b', ConsoleKey.Escape, false, false, false);
-                }
-                if (button.Key == ConsoleKey.Enter)
-                {
-                    Console.WriteLine();
-                    input = buffer.ToString();
-                    buffer.Clear();
-                }
-            } while (button.Key != ConsoleKey.Escape);
-
-
         }
     }
 }

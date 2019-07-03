@@ -13,12 +13,11 @@ namespace text_processor
         private static readonly string[] WithoutArgument = { Unmount };
         private static readonly string[] WithArgument = { Mount, Update };
         private readonly string[] _command;
-        private string Operation { get; set; }
         public string Argument { get; private set; }
 
-        public bool IsUpdate { get; private set; } = false;
-        public bool IsMount { get; private set; } = false;
-        public bool IsUnmount { get; private set; } = false;
+        public bool IsUpdate { get; private set; }
+        public bool IsMount { get; private set; }
+        public bool IsUnmount { get; private set; }
 
         public CommandInput(string[] command)
         {
@@ -52,12 +51,9 @@ namespace text_processor
             }
             if (isSuccess)
             {
-                this.Operation = operation;
-
                 this.IsMount = operation == Mount;
                 this.IsUnmount = operation == Unmount;
                 this.IsUpdate = operation == Update;
-
             }
 
             return isSuccess;

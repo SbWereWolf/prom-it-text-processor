@@ -2,11 +2,11 @@
 
 namespace text_processor
 {
-    class Mount : DatabaseHandler, IHandle
+    class Mount : CommandHandler, IHandle
     {
         public bool Execute()
         {
-            var filename = this._command?.Argument;
+            var filename = this.Command?.Argument;
             var lines = (new FileHandler(filename)).GetLines();
 
             var connection = this.InitializeConnection();
@@ -67,7 +67,9 @@ CREATE UNIQUE INDEX autocompletion_word_uindex ON autocompletion (word);
 
                 command.CommandText = "insert into autocompletion " +
                                       "select line, count(line) AS C from file_line " +
-                                      "where length(line) <16 GROUP BY line HAVING C> 3 ORDER BY line";
+                                      "where length(line) <@Length GROUP BY line HAVING C> @Amount ORDER BY line";
+                command.Parameters?.AddWithValue("@Length", 16);
+                command.Parameters?.AddWithValue("@Amount", 3);
                 command.ExecuteNonQuery();
 
 

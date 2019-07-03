@@ -2,11 +2,11 @@
 
 namespace text_processor
 {
-    class Update : DatabaseHandler, IHandle
+    class Update : CommandHandler, IHandle
     {
         public bool Execute()
         {
-            var filename = this._command?.Argument;
+            var filename = this.Command?.Argument;
             var lines = (new FileHandler(filename)).GetLines();
 
             var connection = this.InitializeConnection();
@@ -43,7 +43,15 @@ set count = (
     WHERE autocompletion.word = new_data.line
     GROUP BY line
 )
-WHERE word in (select new_data.line from new_data where new_data.line = word)";
+WHERE word in (select new_data.line from new_data where new_data.line = word)
+                ";
+                command.ExecuteNonQuery();
+
+                command.CommandText = @"
+insert into autocompletion
+select line, count(line) AS C from new_data
+where length(line) <16 AND NOT EXISTS (SELECT NULL from autocompletion where word = line ) GROUP BY line HAVING C> 3 ORDER BY line
+                ";
                 command.ExecuteNonQuery();
 
                 command.CommandText = "DELETE FROM new_data WHERE TRUE";

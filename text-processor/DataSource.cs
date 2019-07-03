@@ -2,16 +2,9 @@
 
 namespace text_processor
 {
-    class DatabaseHandler
+    class DataSource
     {
-        protected readonly CommandInput _command;
-
-        public DatabaseHandler(CommandInput command)
-        {
-            _command = command;
-        }
-
-        protected SQLiteConnection InitializeConnection()
+        public SQLiteConnection InitializeConnection()
         {
             var databaseFilePath = Properties.Settings.Default?.DataPath;
             var connection = new SQLiteConnection($"Data Source={databaseFilePath};Version=3;");

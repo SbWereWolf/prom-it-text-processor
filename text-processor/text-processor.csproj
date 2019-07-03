@@ -76,9 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandInput.cs" />
-    <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="CommandHandler.cs" />
+    <Compile Include="DataSource.cs" />
     <Compile Include="FileHandler.cs" />
     <Compile Include="IHandle.cs" />
+    <Compile Include="InputProcessor.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
