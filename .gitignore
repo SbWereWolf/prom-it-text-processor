@@ -1,4 +1,4 @@
 .vs/**
-text-processor/bin/**
-text-processor/obj/**
+**/bin/**
+**/obj/**
 packages/**
