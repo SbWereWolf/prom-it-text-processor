@@ -11,7 +11,7 @@ namespace text_processor
         {
             Command = command;
         }
-        protected  void setupConnection(string dataPath)
+        protected  void SetupConnection(string dataPath)
         {
             _connection = DataSource.InitializeConnection(dataPath);
         }

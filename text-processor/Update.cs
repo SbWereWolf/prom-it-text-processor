@@ -12,7 +12,7 @@ namespace text_processor
             SQLiteCommand request = null;
             if (lines?.Length != 0 )
             {
-                this.setupConnection(dataPath);
+                this.SetupConnection(dataPath);
                 request = this.CreateRequest();
             }
 

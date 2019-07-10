@@ -4,7 +4,7 @@
     {
         public bool Execute(string dataPath)
         {
-            this.setupConnection(dataPath);
+            this.SetupConnection(dataPath);
 
             var request = this.CreateRequest();
 
