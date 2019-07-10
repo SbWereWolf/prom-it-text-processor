@@ -69,7 +69,7 @@ namespace text_processor
             {
                 isValid = initialInput.Parse();
             }
-            if (tryParse && !isValid)
+            if (tryParse && !isValid && args != null)
             {
                 var argument = string.Join(" ", args);
                 Console.WriteLine($"Ошибка распознания аргументов: `{argument}`");
@@ -81,12 +81,12 @@ namespace text_processor
                 var databaseFilePath = Properties.Settings.Default?.DataPath;
                 isSuccess = handler != null && handler.Execute(databaseFilePath);
             }
-            if (isValid && !isSuccess)
+            if (isValid && !isSuccess && args != null)
             {
                 var argument = string.Join(" ", args);
                 Console.WriteLine($"Ошибка выполнения команды: `{argument}`");
             }
-            if (isValid && isSuccess)
+            if (isValid && isSuccess && args != null)
             {
                 var argument = string.Join(" ", args);
                 Console.WriteLine($"Команда `{argument}` выполнена успешно");

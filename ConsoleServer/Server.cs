@@ -8,14 +8,14 @@ namespace ConsoleServer
 {
     class Server
     {
-        private readonly string _interfacese;
+        private readonly string _address;
         private readonly int _port;
         private TcpListener _listener;
         private readonly string _dataPath = string.Empty;
 
-        public Server(IReadOnlyList<string> args, string interfacese)
+        public Server(IReadOnlyList<string> args, string address)
         {
-            _interfacese = interfacese;
+            _address = address;
             var isValid = args != null;
             if (isValid)
             {
@@ -52,11 +52,11 @@ namespace ConsoleServer
                 {
                     throw new ArgumentOutOfRangeException(paramName: nameof(_dataPath), message: "Не задан путь к базе данных автодополнений");
                 }
-                if (string.IsNullOrWhiteSpace(_interfacese))
+                if (string.IsNullOrWhiteSpace(_address))
                 {
-                    throw new ArgumentOutOfRangeException(paramName: nameof(_interfacese), message: "Не задан адрес для приёма соединений");
+                    throw new ArgumentOutOfRangeException(paramName: nameof(_address), message: "Не задан адрес для приёма соединений");
                 }
-                _listener = new TcpListener(IPAddress.Parse(_interfacese), _port);
+                _listener = new TcpListener(IPAddress.Parse(_address), _port);
                 _listener.Start();
 
                 while (true)

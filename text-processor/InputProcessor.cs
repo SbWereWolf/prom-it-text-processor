@@ -7,7 +7,6 @@ namespace text_processor
     {
         private readonly string _dataPath;
         private readonly string _input;
-        private static readonly DataSource Source = new DataSource();
 
         public InputProcessor(string input,string dataPath)
         {
@@ -17,7 +16,7 @@ namespace text_processor
 
         public string[] Process()
         {
-            var connection = Source?.InitializeConnection(_dataPath);
+            var connection = DataSource.InitializeConnection(_dataPath);
 
             SQLiteCommand command = null;
             if (connection != null)

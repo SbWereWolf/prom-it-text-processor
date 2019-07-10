@@ -9,18 +9,17 @@ namespace text_processor
             var filename = this.Command?.Argument;
             var lines = new FileHandler(filename).GetLines();
 
-            var connection = InitializeConnection(dataPath);
-
-            SQLiteCommand command = null;
-            if (lines?.Length != 0 && connection != null)
+            SQLiteCommand request = null;
+            if (lines?.Length != 0 )
             {
-                command = connection.CreateCommand();
+                this.setupConnection(dataPath);
+                request = this.CreateRequest();
             }
 
             var result = false;
-            if (command != null && lines != null)
+            if (request != null && lines != null)
             {
-                command.CommandText = @"
+                request.CommandText = @"
 DROP TABLE IF EXISTS file_line;
 DROP INDEX IF EXISTS file_line_line_index;
 DROP TABLE IF EXISTS new_data;
@@ -50,33 +49,33 @@ CREATE TABLE autocompletion
 CREATE UNIQUE INDEX autocompletion_word_uindex ON autocompletion (word);
             ";
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                this.Connect();
+                request.ExecuteNonQuery();
 
 
-                command.CommandText = "BEGIN TRANSACTION";
-                command.ExecuteNonQuery();
+                request.CommandText = "BEGIN TRANSACTION";
+                request.ExecuteNonQuery();
 
-                command.CommandText = "insert into file_line(line) VALUES(@line)";
+                request.CommandText = "insert into file_line(line) VALUES(@line)";
 
                 foreach (var line in lines)
                 {
-                    command.Parameters?.AddWithValue("@line", line);
-                    command.ExecuteNonQuery();
+                    request.Parameters?.AddWithValue("@line", line);
+                    request.ExecuteNonQuery();
                 }
 
-                command.CommandText = "insert into autocompletion " +
+                request.CommandText = "insert into autocompletion " +
                                       "select line, count(line) AS C from file_line " +
                                       "where length(line) <@Length GROUP BY line HAVING C> @Amount ORDER BY line";
-                command.Parameters?.AddWithValue("@Length", 16);
-                command.Parameters?.AddWithValue("@Amount", 3);
-                command.ExecuteNonQuery();
+                request.Parameters?.AddWithValue("@Length", 16);
+                request.Parameters?.AddWithValue("@Amount", 3);
+                request.ExecuteNonQuery();
 
 
-                command.CommandText = "COMMIT TRANSACTION";
-                command.ExecuteNonQuery();
+                request.CommandText = "COMMIT TRANSACTION";
+                request.ExecuteNonQuery();
 
-                connection.Close();
+                this.Disconnect();
 
                 result = true;
             }

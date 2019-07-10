@@ -4,15 +4,15 @@
     {
         public bool Execute(string dataPath)
         {
-            var connection = InitializeConnection(dataPath);
+            this.setupConnection(dataPath);
 
-            var command = connection?.CreateCommand();
+            var request = this.CreateRequest();
 
             var result = false;
-            if (command != null)
+            if (request != null)
             {
 
-                command.CommandText = @"
+                request.CommandText = @"
 DROP TABLE IF EXISTS file_line;
 DROP INDEX IF EXISTS file_line_line_index;
 DROP TABLE IF EXISTS new_data;
@@ -23,10 +23,10 @@ DROP INDEX IF EXISTS autocompletion_word_uindex;
 VACUUM ;
             ";
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                this.Connect();
+                request.ExecuteNonQuery();
 
-                connection.Close();
+                this.Disconnect();
                 result = true;
             }
 

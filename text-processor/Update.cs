@@ -9,33 +9,30 @@ namespace text_processor
             var filename = this.Command?.Argument;
             var lines = new FileHandler(filename).GetLines();
 
-            var connection = InitializeConnection(dataPath);
-
-            SQLiteCommand command = null;
-            if (lines?.Length != 0 && connection != null)
+            SQLiteCommand request = null;
+            if (lines?.Length != 0 )
             {
-                command = connection.CreateCommand();
+                this.setupConnection(dataPath);
+                request = this.CreateRequest();
             }
 
             var result = false;
-            if (command != null && lines != null)
+            if (request != null && lines != null)
             {
-                connection.Open();
+                this.Connect();
 
+                request.CommandText = "BEGIN TRANSACTION";
+                request.ExecuteNonQuery();
 
-                command.CommandText = "BEGIN TRANSACTION";
-                command.ExecuteNonQuery();
-
-                command.CommandText = "insert into new_data(line) VALUES(@line)";
+                request.CommandText = "insert into new_data(line) VALUES(@line)";
 
                 foreach (var line in lines)
                 {
-                    command.Parameters?.AddWithValue("@line", line);
-                    command.ExecuteNonQuery();
+                    request.Parameters?.AddWithValue("@line", line);
+                    request.ExecuteNonQuery();
                 }
-
-
-                command.CommandText = @"
+                
+                request.CommandText = @"
 update autocompletion
 set count = (
     select count(line)
@@ -45,22 +42,22 @@ set count = (
 )
 WHERE word in (select new_data.line from new_data where new_data.line = word)
                 ";
-                command.ExecuteNonQuery();
+                request.ExecuteNonQuery();
 
-                command.CommandText = @"
+                request.CommandText = @"
 insert into autocompletion
 select line, count(line) AS C from new_data
 where length(line) <16 AND NOT EXISTS (SELECT NULL from autocompletion where word = line ) GROUP BY line HAVING C> 3 ORDER BY line
                 ";
-                command.ExecuteNonQuery();
+                request.ExecuteNonQuery();
 
-                command.CommandText = "DELETE FROM new_data WHERE TRUE";
-                command.ExecuteNonQuery();
+                request.CommandText = "DELETE FROM new_data WHERE TRUE";
+                request.ExecuteNonQuery();
 
-                command.CommandText = "COMMIT TRANSACTION";
-                command.ExecuteNonQuery();
+                request.CommandText = "COMMIT TRANSACTION";
+                request.ExecuteNonQuery();
 
-                connection.Close();
+                this.Disconnect();
 
                 result = true;
             }

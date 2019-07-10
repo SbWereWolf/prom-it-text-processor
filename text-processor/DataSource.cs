@@ -2,9 +2,9 @@
 
 namespace text_processor
 {
-    class DataSource
+    static class DataSource
     {
-        public SQLiteConnection InitializeConnection(string databaseFilePath)
+        public static SQLiteConnection InitializeConnection(string databaseFilePath)
         {
             var connection = new SQLiteConnection($"Data Source={databaseFilePath};Version=3;");
             return connection;

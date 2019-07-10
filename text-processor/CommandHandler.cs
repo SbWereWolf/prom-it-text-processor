@@ -5,16 +5,29 @@ namespace text_processor
     class CommandHandler
     {
         protected readonly CommandInput Command;
-        private static readonly DataSource Source = new DataSource();
+        private SQLiteConnection _connection;
 
         protected CommandHandler(CommandInput command)
         {
             Command = command;
         }
-        protected static SQLiteConnection InitializeConnection(string dataPath)
+        protected  void setupConnection(string dataPath)
         {
-            var connection = Source?.InitializeConnection(dataPath);
-            return connection;
+            _connection = DataSource.InitializeConnection(dataPath);
+        }
+
+        protected SQLiteCommand CreateRequest()
+        {
+            return _connection?.CreateCommand();
+        }
+
+        protected void Connect()
+        {
+            _connection?.Open();
+        }
+        protected void Disconnect()
+        {
+            _connection?.Close();
         }
 
     }
