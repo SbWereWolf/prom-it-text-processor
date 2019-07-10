@@ -2,9 +2,9 @@
 {
     class Unmount : CommandHandler, IHandle
     {
-        public bool Execute()
+        public bool Execute(string dataPath)
         {
-            var connection = this.InitializeConnection();
+            var connection = InitializeConnection(dataPath);
 
             var command = connection?.CreateCommand();
 

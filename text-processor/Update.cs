@@ -4,12 +4,12 @@ namespace text_processor
 {
     class Update : CommandHandler, IHandle
     {
-        public bool Execute()
+        public bool Execute(string dataPath)
         {
             var filename = this.Command?.Argument;
-            var lines = (new FileHandler(filename)).GetLines();
+            var lines = new FileHandler(filename).GetLines();
 
-            var connection = this.InitializeConnection();
+            var connection = InitializeConnection(dataPath);
 
             SQLiteCommand command = null;
             if (lines?.Length != 0 && connection != null)

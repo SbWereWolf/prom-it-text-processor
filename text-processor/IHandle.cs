@@ -2,6 +2,6 @@
 {
     interface IHandle
     {
-        bool Execute();
+        bool Execute(string dataPath);
     }
 }

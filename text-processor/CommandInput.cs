@@ -2,7 +2,7 @@
 
 namespace text_processor
 {
-    class CommandInput
+    public class CommandInput
     {
         private const int OperatorIndex = 0;
         private const int ArgumentIndex = 1;
@@ -58,11 +58,5 @@ namespace text_processor
 
             return isSuccess;
         }
-
-        public bool Execute()
-        {
-            return false;
-        }
-
     }
 }

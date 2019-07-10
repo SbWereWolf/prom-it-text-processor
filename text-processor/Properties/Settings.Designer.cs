@@ -25,7 +25,7 @@ namespace text_processor.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("E:\\WORK\\find vacancy\\test_task\\prom-it\\text-processor\\text-processor\\autocompleti" +
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\WORK\\find-vacancy\\test-task\\prom-it\\text-processor\\text-processor\\autocompleti" +
             "on.sqlite")]
         public string DataPath {
             get {

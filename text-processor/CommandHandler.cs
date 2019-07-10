@@ -11,9 +11,9 @@ namespace text_processor
         {
             Command = command;
         }
-        protected SQLiteConnection InitializeConnection()
+        protected static SQLiteConnection InitializeConnection(string dataPath)
         {
-            var connection = Source?.InitializeConnection();
+            var connection = Source?.InitializeConnection(dataPath);
             return connection;
         }
 

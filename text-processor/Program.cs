@@ -3,7 +3,7 @@ using System.Text;
 
 namespace text_processor
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -28,7 +28,7 @@ namespace text_processor
                     button = new ConsoleKeyInfo('\u001b', ConsoleKey.Escape, false, false, false);
                 }
 
-                int amount = 0;
+                var amount = 0;
                 if (button.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine();
@@ -39,7 +39,8 @@ namespace text_processor
                     var input = buffer.ToString();
                     buffer.Clear();
 
-                    var processor = new InputProcessor(input);
+                    var databaseFilePath = Properties.Settings.Default?.DataPath;
+                    var processor = new InputProcessor(input, databaseFilePath);
                     var suggestion = processor.Process();
                     if (suggestion != null)
                     {
@@ -53,7 +54,7 @@ namespace text_processor
             } while (button.Key != ConsoleKey.Escape);
         }
 
-        private static void ProcessCommand(string[] args)
+        public static void ProcessCommand(string[] args)
         {
             var command = new string[0];
             var tryParse = false;
@@ -76,8 +77,9 @@ namespace text_processor
             var isSuccess = false;
             if (isValid)
             {
-                var handler = (new Manager(initialInput)).getHandler();
-                isSuccess = handler != null && handler.Execute();
+                var handler = new Manager(initialInput).getHandler();
+                var databaseFilePath = Properties.Settings.Default?.DataPath;
+                isSuccess = handler != null && handler.Execute(databaseFilePath);
             }
             if (isValid && !isSuccess)
             {

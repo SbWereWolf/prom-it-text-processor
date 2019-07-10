@@ -3,19 +3,21 @@ using System.Data.SQLite;
 
 namespace text_processor
 {
-    class InputProcessor
+    public class InputProcessor
     {
+        private readonly string _dataPath;
         private readonly string _input;
         private static readonly DataSource Source = new DataSource();
 
-        public InputProcessor(string input)
+        public InputProcessor(string input,string dataPath)
         {
             _input = input;
+            _dataPath = dataPath;
         }
 
         public string[] Process()
         {
-            var connection = Source?.InitializeConnection();
+            var connection = Source?.InitializeConnection(_dataPath);
 
             SQLiteCommand command = null;
             if (connection != null)

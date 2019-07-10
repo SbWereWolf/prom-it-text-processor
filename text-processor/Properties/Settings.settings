@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DataPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">E:\WORK\find vacancy\test_task\prom-it\text-processor\text-processor\autocompletion.sqlite</Value>
+      <Value Profile="(Default)">E:\WORK\find-vacancy\test-task\prom-it\text-processor\text-processor\autocompletion.sqlite</Value>
     </Setting>
   </Settings>
 </SettingsFile>
